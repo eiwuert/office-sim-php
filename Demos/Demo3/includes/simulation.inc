@@ -1,24 +1,18 @@
 <?php
 
-namespace SimulationService;
+//namespace SimulationService;
 
 class Simulation
 {
     private $timer;
-    private $services;
-    private $backlog;
+    private $office;
     private $config;
-    private $logger;
 
-    public function __construct(\Logger $logger,\Backlog $backlog,\Office $office, \Timer $timer, $config)
+    public function __construct(TimerService $timer, OfficeService $office, $config)
     {
-        
         $this->config       = $config;
-        $this->logger       = $logger;
-        $this->backlog      = $backlog;
-        $this->office       = $office;
         $this->timer        = $timer;
-  
+        $this->office       = $office;
     }
 
     public function runSimulation()
@@ -50,14 +44,11 @@ class Simulation
             //run the office services
             $this->office->runServices();
 
-            //run the backlog
-            //$this->backlog->run();
+            //run the office backlog
+            $this->office->runBacklog();
 
         }
 
-        $backlog = $this->backlog->getBacklog();
-
-     
     }
    
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace MarketingServices;
+//namespace MarketingServices;
 
-use DepartmentServices\DepartmentServices as DepartmentServices;
+//use DepartmentServices\DepartmentServices as DepartmentServices;
 
-class MarketingServices extends DepartmentServices
+class Marketing extends Department
 {
   
   /* 
@@ -32,7 +32,8 @@ class MarketingServices extends DepartmentServices
       */
         
       $classname = $service['simulation']['classes']['simulationClass']['value'];
-      $simulationClass = new $classname();
+      $this->setSimulationClass($classname);
+      //$simulationClass = new $classname();
 
 
       //WE NEED TO SET THESE SUCKAS
@@ -40,7 +41,7 @@ class MarketingServices extends DepartmentServices
 
 
       // the goal of each ServiceSimulation class is to generate output processes (backlog objects)
-      $simulationClass->setProcesses();
+      //$simulationClass->setProcesses();
 
       /*
       

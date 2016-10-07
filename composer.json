@@ -1,0 +1,12 @@
+{
+    "name": "vagrant/public",
+    "authors": [
+        {
+            "name": "William Jones",
+            "email": "billy@freshjones.com"
+        }
+    ],
+    "require": {
+        "pimple/pimple": "~3.0"
+    }
+}

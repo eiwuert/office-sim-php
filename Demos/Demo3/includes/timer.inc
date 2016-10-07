@@ -1,10 +1,11 @@
 <?php
 
-//namespace TimeServices;
+interface TimerService
+{
 
-//use Singleton\Singleton as Singleton;
+}
 
-class Timer
+class StdTimer implements TimerService
 {
    
    	private $current;

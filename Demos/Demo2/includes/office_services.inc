@@ -1,8 +1,10 @@
 <?php
 
-namespace OfficeServices;
+//namespace OfficeServices;
+//use Singleton\Singleton as Singleton;
 
-class OfficeServices
+
+class Office
 {
     private $services;
 
@@ -27,7 +29,7 @@ class OfficeServices
 
         foreach($services AS $service)
         {
-            $service->runService();
+            $service->runDepartmentServices();
         }
 
     }

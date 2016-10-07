@@ -1,6 +1,6 @@
 <?php
 
-namespace DepartmentServices;
+//namespace DepartmentServices;
 
 /*
 
@@ -16,15 +16,13 @@ namespace DepartmentServices;
 
 */ 
 
-interface DepartmentServicesInterface
+interface DepartmentService
 {
   public function runDepartmentServices();
 }
 
-abstract class DepartmentServices implements DepartmentServicesInterface
+abstract class Department implements DepartmentService
 {
-  
-  //private $backlog;
 
   private $data;
   private $config;
@@ -33,19 +31,18 @@ abstract class DepartmentServices implements DepartmentServicesInterface
   public function __construct($data)
   {
 
-    //$this->backlog = \Backlog::instance();
-
     $this->data = $data;
     $this->config = $data['config'];
     $this->services = $data['services'];
   }
 
-  /*
-  protected function getBacklog()
+  protected function setSimulationClass($name)
   {
-    return $this->backlog;
+      echo '<pre>';
+      print_r($name);
+      echo '</pre>';
+      die();
   }
-  */
   
   public function getName()
   {
