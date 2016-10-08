@@ -1,6 +1,6 @@
 <?php
 
-/* create and return all service objects for a department */
+/*  */
 
 interface DepartmentServicesInterface
 {

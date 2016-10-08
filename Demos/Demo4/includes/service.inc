@@ -1,6 +1,6 @@
 <?php
 
-/* create and return all service objects for a department */
+/*  */
 
 interface DepartmentServiceInterface
 {
@@ -9,12 +9,13 @@ interface DepartmentServiceInterface
 
 class DepartmentService implements DepartmentServiceInterface
 {
-	private $simulation;
+
+	//private $simulation;
 	private $service;
 
-	public function __construct($data, Simulation $simulation)
+	public function __construct($data, ServiceSimulationInterface $simulation)
 	{
-		$this->simulation = $simulation;
+		//$this->simulation = $simulation;
 		$this->createService($data);
 	}
 
@@ -22,9 +23,7 @@ class DepartmentService implements DepartmentServiceInterface
 	{
 		$service = new stdClass();
 		$service->name = $data['name'];
-
 		$this->service = $service;
-
 	}
 
 	public function getService()
@@ -34,7 +33,7 @@ class DepartmentService implements DepartmentServiceInterface
 
 	public function simulate()
 	{
-		echo 'simulate';
+		echo 'simulating ' . $this->service->name . '<br/>';
 	}
 
 }

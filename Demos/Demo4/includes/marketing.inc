@@ -1,6 +1,6 @@
 <?php
 
-interface Department
+interface DepartmentInterface
 {
   public function runDepartmentServices();
 }
@@ -9,7 +9,7 @@ interface Department
   a departments job is to run through all of its services
 */
 
-class Marketing implements Department
+class Marketing implements DepartmentInterface
 {
   
   private $services;
