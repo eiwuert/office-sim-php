@@ -2,15 +2,10 @@
 
 namespace App\Includes;
 
-use App\Includes\Departments\DepartmentsInterface;
-use App\Includes\PersonsInterface;
-use App\Includes\Simulation\Includes\SimulationInterface;
-
-interface OfficeInterface
-{
-    public function simulate();
-
-}
+use App\Contracts\Office\OfficeInterface;
+use App\Contracts\Departments\DepartmentsInterface;
+use App\Contracts\People\PersonsInterface;
+use App\Contracts\Simulation\SimulationInterface;
 
 class Office implements OfficeInterface
 {

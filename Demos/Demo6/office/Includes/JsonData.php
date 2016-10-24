@@ -2,11 +2,7 @@
 
 namespace App\Includes;
 
-interface DataInterface
-{
-    public function getData($name);
-    public function getAll();
-}
+use App\Contracts\Support\DataInterface;
 
 class JsonData implements DataInterface
 {

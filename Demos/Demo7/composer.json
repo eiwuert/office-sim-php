@@ -1,0 +1,13 @@
+{
+    "name": "vagrant/demo7",
+    "authors": [
+        {
+            "name": "William Jones",
+            "email": "billy@freshjones.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {"App\\": "src/"}
+    }
+}

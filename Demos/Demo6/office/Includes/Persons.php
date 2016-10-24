@@ -2,11 +2,8 @@
 
 namespace App\Includes;
 
-interface PersonsInterface
-{
-    public function setPerson(PersonInterface $person);
-    public function getPerson(String $person);
-}
+use App\Contracts\People\PersonsInterface;
+use App\Contracts\People\PersonInterface;
 
 class Persons implements PersonsInterface
 {
@@ -22,7 +19,7 @@ class Persons implements PersonsInterface
         $this->persons[] = $person;
     }
 
-    public function getPerson(String $person)
+    public function getPerson($person)
     {
         return $this->persons[$person];
     }

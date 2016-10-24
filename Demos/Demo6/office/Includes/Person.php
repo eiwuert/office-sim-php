@@ -2,9 +2,7 @@
 
 namespace App\Includes;
 
-interface PersonInterface
-{
-}
+
 
 class Person implements PersonInterface
 {

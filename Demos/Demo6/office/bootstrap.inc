@@ -1,9 +1,9 @@
 <?php
 
-require_once(__DIR__ . '/includes/departments/marketing/bootstrap.php');
-require_once(__DIR__ . '/includes/simulation/bootstrap.php');
+require_once(__DIR__ . '/departments/marketing/bootstrap.php');
+require_once(__DIR__ . '/simulation/bootstrap.php');
 
-use App\Includes\Departments\Departments;
+use App\Departments\Departments;
 use App\Includes\Persons;
 use App\Includes\Office;
 

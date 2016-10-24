@@ -1,0 +1,158 @@
+{
+	"id" : "marketing",
+	"data" : {
+		"services" : [
+			{
+				"active":true,
+				"name":"Referalls",
+				"ID" : "MAR-OUT-002-000-000",
+				"type" : "Outbound",
+				"class" : "MarketingService",
+				"inputs" : [],
+				"processes" : [],
+				"outputs" : [],
+				"simulation" : {
+					"class" : { 
+						"value":"MarketingServiceSimulation", 
+						"description":"An avertising-specific simulation class object" 
+					},
+					"opportunities" : { 
+						"values":[[0,3],[4,6],[7,10],[11,15]],
+						"weights":[30,57,10,3],
+						"description":"weighted amount of outputs this service can produce in a given time period per team member"
+					},
+					"probability" : { 
+						"value":50, 
+						"description":"percent probability of converting an input to an output"
+					},
+					"processtime" : { 
+						"values":[[24,48],[48,72],[72,168],[168,720]],
+						"weights":[0.3,0.5,0.15,0.05],
+						"description":"weighted amount of hours necessary to achieve output"
+					}
+				}
+			},
+			{
+				"active":false,
+				"name":"Advertising",
+				"ID" : "MAR-OUT-001-000-000",
+				"type" : "Outbound",
+				"inputs" : {
+					
+				},
+				"processes" : [],
+				"outputs" : {
+
+				},
+				"simulation" : {
+					"class" : { 
+						"value":"MarketingAdvertisingSimulation", 
+						"description":"An avertising-specific simulation class object" 
+					},
+					"cost" : { 
+						"values":100,
+						"description":"the cost of the advertisement per placement" 
+					},
+					"frequency" : { 
+						"values":[3,6,9,12],
+						"description":"Months the advertisment will run"
+					},
+					"reach" : { 
+						"values":[[1000,1500]],
+						"weights":[1],
+						"description":"weighted amount of people likely exposed to the ad"
+					},
+					"probability" : { 
+						"value":1, 
+						"description":"percent probability of converting an impression to a lead"
+					},
+					"age" : { 
+						"values":[[24,48],[48,72],[72,168],[168,720]],
+						"weights":[0.3,0.5,0.15,0.05],
+						"description":"weighted time required to convert an impression to a lead"
+					}
+				}
+			},
+			{
+				"active":false,
+				"name":"In Person",
+				"ID" : "MAR-OUT-003-000-000",
+				"type" : "Outbound",
+				"inputs" : [],
+				"processes" : [],
+				"outputs" : [],
+				"simulationClass" : "MarketingSimulation"
+			},
+			{
+				"active":false,
+				"name":"Phone",
+				"ID" : "MAR-OUT-004-000-000",
+				"type" : "Outbound",
+				"inputs" : [],
+				"processes" : [],
+				"outputs" : [],
+				"simulationClass" : "MarketingSimulation"
+			},
+			{
+				"active":false,
+				"name":"Email",
+				"ID" : "MAR-OUT-005-000-000",
+				"type" : "Outbound",
+				"inputs" : [],
+				"processes" : [],
+				"outputs" : [],
+				"simulationClass" : "MarketingSimulation"
+			},
+			{
+				"active":false,
+				"name":"Tradeshows",
+				"ID" : "MAR-OUT-006-000-000",
+				"type" : "Outbound",
+				"inputs" : [],
+				"processes" : [],
+				"outputs" : [],
+				"simulationClass" : "MarketingSimulation"
+			},
+			{
+				"active":false,
+				"name":"Direct Mail",
+				"ID" : "MAR-OUT-007-000-000",
+				"type" : "Outbound",
+				"inputs" : [],
+				"processes" : [],
+				"outputs" : [],
+				"simulationClass" : "MarketingSimulation"
+			},
+			{
+				"active":false,
+				"name":"Social Media",
+				"ID" : "MAR-IN-001-000-000",
+				"type" : "Inbound",
+				"inputs" : [],
+				"processes" : [],
+				"outputs" : [],
+				"simulationClass" : "InboundSimulation"
+			},
+			{
+				"active":false,
+				"name":"Search",
+				"ID" : "MAR-IN-002-000-000",
+				"type" : "Inbound",
+				"inputs" : [],
+				"processes" : [],
+				"outputs" : [],
+				"simulationClass" : "InboundSimulation"
+			},
+			{
+				"active":false,
+				"name":"Presentations",
+				"ID" : "MAR-IN-003-000-000",
+				"type" : "Inbound",
+				"inputs" : [],
+				"processes" : [],
+				"outputs" : [],
+				"simulationClass" : "InboundSimulation"
+			}
+		]
+	}
+}
