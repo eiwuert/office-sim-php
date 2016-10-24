@@ -7,12 +7,13 @@ use Core\App;
 class Simulation
 {
     private $timer;
+    private $logger;
     private $statistics = array();
 
-    public function __construct(Timer $timer)
+    public function __construct(Timer $timer, Logger $logger)
     {
         $this->timer = $timer;
-
+        $this->logger = $logger;
 
     }
 
@@ -43,7 +44,8 @@ class Simulation
             //increment the timer for each month
             $this->timer->incrementMonth($i * 720);
 
-            $this->statistics[] = $this->timer->getCurrentValue('day');
+            $this->logger->addRecord('Marketing','Blah','Whats Up??');
+            //$this->statistics[] = $this->timer->getCurrentValue('day');
             //we must now run the offices department simulations
             //$departments = $this->office->getDepartments();
             
@@ -60,7 +62,7 @@ class Simulation
 
     public function statistics()
     {
-        return $this->statistics;
+       return $this->logger->getLog();
     }
 
 }
