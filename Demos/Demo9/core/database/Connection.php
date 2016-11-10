@@ -12,7 +12,7 @@ class Connection
     public static function make($config)
     {
         $connection = new static;
-        $connection->dir = __DIR__ . "/../../{$config['directory']}";
+        $connection->dir = $config['directory'];
         
         $files = scandir($connection->dir);
 

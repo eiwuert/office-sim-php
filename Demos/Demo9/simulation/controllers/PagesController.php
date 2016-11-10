@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controllers;
+namespace Simulation\Controllers;
 
-use Core\App;
+use Core\App ;
 
 class PagesController
 {

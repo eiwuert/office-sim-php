@@ -8,7 +8,7 @@
 function view($name, $data = [])
 {
     extract($data);
-    return require __DIR__ . "/../app/views/{$name}.tpl.php";
+    return require __DIR__ . "/../simulation/views/{$name}.tpl.php";
 }
 /**
  * Redirect to a new page.

@@ -1,0 +1,18 @@
+{
+	
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "https://github.com/freshjones/testcore.git"
+        }
+    ],
+    "require": {
+        "freshjones/testcore": "dev-master"
+    },
+    "autoload": 
+    {
+        "psr-4": {
+            "FreshJones\\Office\\": "src/"
+        }
+    }
+}

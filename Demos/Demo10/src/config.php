@@ -1,8 +1,5 @@
 <?php
 return [
-	"database" => [
-		"directory" => __DIR__ . "/data",
-	],
 	"similation" => [
 		"iterations"=>1,
 		"jobsPerYear"=>1,

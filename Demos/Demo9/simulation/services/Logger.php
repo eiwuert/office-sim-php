@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace Simulation\Services;
 
+use Core\App;
 
 class Logger
 {
@@ -9,9 +10,9 @@ class Logger
     private $timer;
     private $log = array();
 
-    public function __construct(Timer $timer)
+    public function __construct()
     {
-        $this->timer = $timer;
+        $this->timer = App::get('timer');
     }
 
     public function addRecord($type,$id,$value)

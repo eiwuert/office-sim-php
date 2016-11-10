@@ -1,36 +1,43 @@
 <?php
 
-namespace App\Services;
+namespace Simulation\Services;
 
 use Core\App;
+//use Office\Office;
 
 class Simulation
 {
+    private $departments;
+
     private $timer;
     private $logger;
     private $statistics = array();
 
-    public function __construct(Timer $timer, Logger $logger)
+    public function __construct()
     {
-        $this->timer = $timer;
-        $this->logger = $logger;
-
+        $this->timer = App::get('timer');
+        $this->logger = App::get('logger');
     }
 
     public function run()
     {
 
+        $this->departments = App::get('departments');
+
         $this->timer->init();
+
         $settings = App::get('config')['similation'];
 
         for($i=0; $i < $settings['iterations']; $i++)
         { 
+            
             $this->timer->reset();
             $this->timer->increment('iteration');
             $this->timer->increment('year');
 
             // run the iteration
             $this->iterate();
+
         }
 
     }
@@ -46,15 +53,16 @@ class Simulation
 
             $this->logger->addRecord('Marketing','Blah','Whats Up??');
             //$this->statistics[] = $this->timer->getCurrentValue('day');
-            //we must now run the offices department simulations
-            //$departments = $this->office->getDepartments();
             
-            /*
+            $departments = $this->departments->all();
+       
             foreach($departments AS $department)
             {
+                
                 $department->simulate();
+                //$queue = App::get('queue');
+
             }
-            */
 
         }
 

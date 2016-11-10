@@ -80,7 +80,7 @@ class Router
      */
     protected function callAction($controllerName, $action)
     {
-        $controller = "App\\Controllers\\{$controllerName}";
+        $controller = "Simulation\\Controllers\\{$controllerName}";
         $controller = new $controller;
 
         try{
