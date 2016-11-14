@@ -14,21 +14,87 @@ class Queue
 {
    	
    	private $registry;
-   	private $timer;
+   	private $logger;
+    private $timer;
 
-    public function __construct(Timer $timer)
+    public function __construct(Logger $logger)
     {
-    	$this->timer = $timer;
+    	$this->logger = $logger;
+      $this->timer = $logger->getTimer();
     }
 
     public function run()
     {
+      
       //run the queue
+      $processes = $this->getProcesses();
+
+      if(!$processes)
+        return;
+
+      echo '<pre>';
+      print_r($processes);
+      echo '</pre>';
+      die();
+      foreach($processes AS $k => $processor)
+      {
+          $processor->delay_or_process($this);
+      }
+
+      $this->run();
+      
     }
 
-    public function register(QueueProcessInterface $process)
+    public function log($department,$service,$key,$value)
     {
-      $this->registry[] = $process;
+      
+        $this->logger->addRecord(
+            $department,
+            $service, 
+            $key, 
+            $value
+        );
+
+    }
+
+    private function getProcesses()
+    {
+      
+      if(
+          !$this->registry || 
+          !is_array($this->registry) || 
+          empty($this->registry)
+        )
+      {
+        return false;
+      }
+        
+      $currentMonth = $this->timer->getCurrentValue('month');
+
+      if(
+          !isset($this->registry['Month ' . $currentMonth]) || 
+          !is_array($this->registry['Month ' . $currentMonth]) || 
+          empty($this->registry['Month ' . $currentMonth]) 
+        )
+      {
+        return false;
+      }
+
+      $processes = $this->registry['Month ' . $currentMonth];
+
+      unset($this->registry['Month ' . $currentMonth]);
+
+      return $processes;
+
+    }
+
+
+    public function register(QueueProcessor $processor)
+    {
+
+      $month = $processor->startOn();
+
+      $this->registry['Month ' . $month][] = $processor;
     }
 
 }

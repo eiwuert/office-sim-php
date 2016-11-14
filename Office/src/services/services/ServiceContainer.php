@@ -17,20 +17,30 @@ class ServiceContainer extends Container
 		
 	}
 
-	private function setServices($serviceData)
+	private function setServices($serviceDataArray)
 	{
-
-		foreach($serviceData AS $key => $servicedata)
+		
+		foreach($serviceDataArray AS $key => $serviceData)
 		{
 
-			if(!isset($servicedata['class']))
+			if(!isset($serviceData['class']))
 				continue;
 
-			$simulationData = $servicedata['simulation'];
-			$simulatorName = $simulationData['classes']['simulationClass']['value'];
-			$simulator = new $simulatorName($simulationData);
+			$simulationData = $serviceData['simulation'];
+			
+			$service = new $serviceData['class']($serviceData);
 
-			$this->addService($key, new $servicedata['class']($servicedata, $simulator) );
+			//set the simulator
+			$simulatorName = $simulationData['classes']['simulationClass']['value'];
+
+			$service->setSimulator( new $simulatorName($simulationData) );
+			
+			//set the outputs
+			$serviceOutputs = new ServiceOutputContainer( $serviceData['outputs'] );
+			$service->setOutputs($serviceOutputs);
+
+			//add the service
+			$this->addService($key, $service);
 
 		}
 

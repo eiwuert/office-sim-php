@@ -44,13 +44,54 @@ return [
 				],
 				"processtime" => [ 
 					"values"=> [[24,48],[48,72],[72,168],[168,720]],
-					"weights"=> [0.3,0.5,0.15,0.05],
+					"weights"=> [30,50,15,5],
 					"description"=> "weighted amount of hours necessary to achieve output"
+				],
+				"startdelays" => [
+					"probability" => [
+						"value" => 50,
+						"description" => "probability that this service will be delayed in starting"
+					],
+					"cost" => [
+						"values"=> [[24,48],[48,72],[72,168],[168,720]],
+						"weights"=> [30,50,15,5],
+						"description" => "weighted amount of time added to the start date of the service"
+					],
+					"reason" => [
+						"values" => [
+							"Customer delays getting requirements to us",
+							"Customer delays signing contract",
+							"Customer delays initial payment"
+						],
+						"weights" => [70,10,20],
+						"description" => "weighted reasons why the start delay occured beyond its normal input requirements"
+					]
+				],
+				"finishdelays" => [
+					"probability" => [
+						"value" => 50,
+						"description" => "probability that this service will be delayed in finishing"
+					],
+					"cost" => [
+						"values"=> [[24,48],[48,72],[72,168],[168,720]],
+						"weights"=> [30,50,15,5],
+						"description" => "weighted amount of time added to the start date of the service"
+					],
+					"reason" => [
+						"values" => [
+							"Customer delays getting requirements to us",
+							"Customer delays signing contract",
+							"Customer delays initial payment"
+						],
+						"weights" => [70,10,20],
+						"description" => "weighted reasons why the finish delay occured"
+					]
 				]
+
 			]
 		],
 		"advertisment" => [
-			"active"=> false,
+			"active"=> true,
 			"name"=> "Advertising",
 			"department"=> "Marketing",
 			"class" => "FreshJones\Office\Services\Services\AdvertisingService",
@@ -114,7 +155,7 @@ return [
 			]
 		],
 		"inperson" => [
-			"active"=> false,
+			"active"=> true,
 			"name"=> "In Person",
 			"department"=> "Marketing",
 			"class" => "FreshJones\Office\Services\Services\InPersonService",

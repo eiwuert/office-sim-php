@@ -2,31 +2,38 @@
 
 namespace App\Services;
 
-use Freshjones\Core\Helpers\SimulationHelpers;
-use \FreshJones\Office\Services\Simulations\SimulatorInterface;
+//use Freshjones\Core\Helpers\SimulationHelpers;
+//use \FreshJones\Office\Services\Simulations\ServiceSimulatorInterface;
 
-interface QueueProcessorInterface {
-
-  public function addProcessesToQueue(SimulatorInterface $service);
-}
 
 /*
-	The queues job is to store processes and release them at the specified time interval
-	This allows us to simulate real life events that do not happen immediately when they are intiated
-	The Queue will require a timer so that it can look at events that should happen within a certain timeframe
-	It will then run those events until there are no more and then end its cycle
+	The queue processors job is to prepare a simulations outputs for the queue
+	it turns them into process objects and enters them into the queue
 */
-abstract class QueueProcessor implements QueueProcessorInterface
+class QueueProcessor 
 {
-	protected $helpers;
-	protected $timer;
-	
-    public function __construct(Timer $timer)
+
+    private $output;
+    private $delays;
+
+    public function __construct()
     {
-    	$this->timer = $timer;
-    	$this->helpers = new SimulationHelpers();
+    	
     }
 
-    abstract function addProcessesToQueue(SimulatorInterface $service);
+    public function startOn()
+    {
+        return 1;
+    }
 
+    public function setDelay($key, QueueDelay $delay)
+    {
+        $this->delays[$key] = $delay;
+    }
+
+    public function setOutput($output)
+    {
+        $this->output = $output;
+    }
+   
 }

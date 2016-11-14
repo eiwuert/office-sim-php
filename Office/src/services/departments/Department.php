@@ -2,20 +2,26 @@
 
 namespace FreshJones\Office\Services\Departments;
 
-use Freshjones\Core\Helpers\Container;
-use FreshJones\Office\Services\Services\ServiceContainer;
+//use Freshjones\Core\Helpers\Container;
+//use FreshJones\Office\Services\Services\ServiceContainer;
 
-class Department extends Container
+class Department
 {	
 
-	public function __construct($name)
+	private $name;
+	private $config;
+
+	public function __construct($name, $config)
 	{
-		$this->set('name',$name);
+		$this->name = $name;
+		$this->config = $config;
 	}
 	
+	/*
 	public function setServices(ServiceContainer $services)
 	{
 		$this->set('services',$services);
 	}
-	
+	*/
+
 }

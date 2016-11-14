@@ -35,6 +35,11 @@ class Logger
         $this->log[] = $record;
     }
 
+    public function getTimer()
+    {
+        return $this->timer;
+    }
+
     public function getRecord($id)
     {
         return $this->log[$id];

@@ -48,11 +48,20 @@ class Simulation
         return $this->app->get('queue');
     }
 
-    public function getQueueProcessor($processor)
+    public function getQueueProcessor()
     {
-        return $this->app->get('queueprocessors')->get($processor);
-    }
+        //return $this->app->get('queueprocessor');
 
+        return new QueueProcessor();
+    }
+    
+    /*
+    public function getQueueDelay()
+    {
+        return new QueueDelay();
+    }
+    */
+    
     public function getTimer()
     {
         return $this->app->get('timer');
@@ -84,12 +93,11 @@ class Simulation
 
     private function runQueueForAMonth()
     {
-
-        echo '<pre>';
-        print_r($this->getQueue());
-        echo '</pre>';
-        die();
+        
         $this->getQueue()->run();
+
+        die();
+
     }
 
     private function runDepartmentsForAMonth()
