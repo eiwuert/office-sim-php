@@ -2,45 +2,29 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use Freshjones\Core\Helpers\SimulationHelpers;
 use FreshJones\Office\Services\Services\Office;
+use FreshJones\Office\Services\Services\SimulationServiceFactory;
 
-//use Freshjones\Core\Helpers\Container;
+use Freshjones\Core\Helpers\SimulationHelpers;
 
-//use FreshJones\Office\Services\Departments\Department;
-//use FreshJones\Office\Services\Departments\Marketing;
-//use FreshJones\Office\Services\Departments\Sales;
-//use FreshJones\Office\Services\Departments\Customer;
-
-
-use FreshJones\Office\Services\Services\ServiceOutputFactory;
+use FreshJones\Office\Services\Services\SimulationServiceInputFactory;
+use FreshJones\Office\Services\Services\SimulationServiceOutputFactory;
 use FreshJones\Office\Services\Simulations\BaseSimulatorFactory;
-use FreshJones\Office\Services\Simulations\DelayFactory;
 
-//$marketing = new Marketing('marketing');
-//$marketing->setServices( new ServiceContainer(require 'data/marketing.php') );
+use FreshJones\Office\Services\Simulations\BaseOpportunityConverterFactory;
+use FreshJones\Office\Services\Simulations\MonthlyDelayerFactory;
 
-//$sales = new Sales('sales');
-//$sales->setServices( new ServiceContainer(require 'data/sales.php') );
+$serviceFactory 				= new SimulationServiceFactory();
 
-//$customer = new Customer('customer');
-//$customer->setServices( new ServiceContainer(require 'data/customer.php') );
+$helpers 						= new SimulationHelpers();
+$serviceInputFactory 			= new SimulationServiceInputFactory();
 
-//$departments = new Container();
-//$departments->set( );
-//$departments->set('sales', $sales);
-//$departments->set('customer', $customer);
+$serviceOutputFactory 			= new SimulationServiceOutputFactory();
 
-//$office = new OfficeContainer();
-//$office->setDepartment('marketing', require 'data/marketing.php' );
-//$office->setDepartment('sales', require 'data/sales.php' );
+$baseSimulatorFactory 			= new BaseSimulatorFactory();
+$delayerFactory 				= new MonthlyDelayerFactory($helpers);
 
-//$helpers = new SimulationHelpers();
-
-$serviceOutputFactory 	= new ServiceOutputFactory();
-$baseSimulatorFactory 	= new BaseSimulatorFactory();
-$delayFactory 			= new DelayFactory();
-$helpers 				= new SimulationHelpers();
+$opportunityConverterFactory 	= new BaseOpportunityConverterFactory($helpers);
 
 $marketingData = require 'data/marketing.php';
 
@@ -55,41 +39,55 @@ if(isset($marketingData['services']))
 		if(!$serviceData['active'])
 			continue;
 
-		$services[$serviceKey] = array();
-		$services[$serviceKey]['name'] = $serviceData['name'];
-		$services[$serviceKey]['department'] = $serviceData['department'];
+		$service = $serviceFactory->make();
+		$service->setParam('Name', $serviceData['name'] );
+		$service->setParam('Department', $serviceData['department'] );
+		$service->setParam('Inputs', $serviceInputFactory->make() );
+		$service->setParam('Delays',0);
+
+		$inputs = array();
+
+		foreach($serviceData['inputs'] AS $input)
+		{
+			$inputs[] = $serviceInputFactory->make();
+		}
+		
+		$service->setParam('Inputs', $inputs );
 
 		$outputs = array();
-		foreach($serviceData['outputs'] AS $outputName => $outputData)
-		{
-			//placeholder replace this with actual service output objects
-			$outputs[$outputName] = $serviceOutputFactory->make();
-		}
 
-		$services[$serviceKey]['outputs'] = $outputs;
+		foreach($serviceData['outputs'] AS $output)
+		{
+			$outputs[] = $serviceOutputFactory->make();
+		}
 		
-		unset($serviceData['simulation']['classes']);
+		$service->setParam('Outputs', $outputs );
 
-		$startdelays = array();
-		if( isset($serviceData['simulation']['startdelays']) )
-		{
-			$startdelays = $serviceData['simulation']['startdelays'];
-			unset($serviceData['simulation']['startdelays']);
-		}
+		$simData = $serviceData['simulation'];
 
-		$finishdelays = array();
-		if( isset($serviceData['simulation']['finishdelays']) )
-		{
-			$finishdelays = $serviceData['simulation']['finishdelays'];
-			unset($serviceData['simulation']['finishdelays']);
-		}
+		$opportunityConverter = $opportunityConverterFactory->make();
+		$opportunityConverter->setOpportunities($simData['opportunities']);
+		$opportunityConverter->setProbability($simData['probability']);
 
-		$simulator = $baseSimulatorFactory->make($serviceData['simulation']);
-		$simulator->setDelay('start', $delayFactory->make( $startdelays ) );
-		$simulator->setDelay('finish', $delayFactory->make( $finishdelays ) );
-	
-		$services[$serviceKey]['simulator'] = $simulator;
+		$simulator = $baseSimulatorFactory->make();
+		$simulator->setOpportunityConverter( $opportunityConverter );
+
+		$delayer = $delayerFactory->make();
+
+		$delayer->setProcessDelays($simData['processtime']);
 		
+		if(isset($simData['startdelays']))
+			$delayer->setStartDelays($simData['startdelays']);
+
+		if(isset($simData['finishdelays']))
+			$delayer->setFinishDelays($simData['finishdelays']);
+
+		$simulator->setProcessDelayer( $delayer );
+
+		$service->setParam('Simulator', $simulator );
+
+		$services[] = $service;
+
 	}
 
 }

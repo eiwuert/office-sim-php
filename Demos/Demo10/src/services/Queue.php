@@ -4,6 +4,8 @@ namespace App\Services;
 
 //use FreshJones\Core\Helpers\Container;
 
+use \FreshJones\Office\Contracts\ServiceContract;
+
 /*
 	The queues job is to store processes and release them at the specified time interval
 	This allows us to simulate real life events that do not happen immediately when they are intiated
@@ -27,18 +29,23 @@ class Queue
     {
       
       //run the queue
-      $processes = $this->getProcesses();
+      $services = $this->getServices();
 
-      if(!$processes)
+      if(!$services)
         return;
 
-      echo '<pre>';
-      print_r($processes);
-      echo '</pre>';
-      die();
-      foreach($processes AS $k => $processor)
+      foreach($services AS $service)
       {
-          $processor->delay_or_process($this);
+        
+        if( $delayPeriod = $service->getParam('Simulator')->delay() )
+        {
+            $this->register($delayPeriod, $service);
+        } 
+        else 
+        {
+            $service->finish();
+        }   
+
       }
 
       $this->run();
@@ -57,7 +64,7 @@ class Queue
 
     }
 
-    private function getProcesses()
+    private function getServices()
     {
       
       if(
@@ -72,29 +79,28 @@ class Queue
       $currentMonth = $this->timer->getCurrentValue('month');
 
       if(
-          !isset($this->registry['Month ' . $currentMonth]) || 
-          !is_array($this->registry['Month ' . $currentMonth]) || 
-          empty($this->registry['Month ' . $currentMonth]) 
+          !isset($this->registry['Period ' . $currentMonth]) || 
+          !is_array($this->registry['Period ' . $currentMonth]) || 
+          empty($this->registry['Period ' . $currentMonth]) 
         )
       {
         return false;
       }
 
-      $processes = $this->registry['Month ' . $currentMonth];
+      //get the services for this period
+      $services = $this->registry['Period ' . $currentMonth];
 
-      unset($this->registry['Month ' . $currentMonth]);
+      //unset the current period in the registry
+      unset($this->registry['Period ' . $currentMonth]);
 
-      return $processes;
+      //return the services
+      return $services;
 
     }
 
-
-    public function register(QueueProcessor $processor)
+    public function register($period, ServiceContract $service)
     {
-
-      $month = $processor->startOn();
-
-      $this->registry['Month ' . $month][] = $processor;
+      $this->registry['Period ' . $period][] = $service;
     }
 
 }

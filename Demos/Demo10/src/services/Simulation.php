@@ -48,20 +48,6 @@ class Simulation
         return $this->app->get('queue');
     }
 
-    public function getQueueProcessor()
-    {
-        //return $this->app->get('queueprocessor');
-
-        return new QueueProcessor();
-    }
-    
-    /*
-    public function getQueueDelay()
-    {
-        return new QueueDelay();
-    }
-    */
-    
     public function getTimer()
     {
         return $this->app->get('timer');
@@ -86,18 +72,13 @@ class Simulation
 
             //run through the departments
             $this->runQueueForAMonth();
-
         }
 
     }
 
     private function runQueueForAMonth()
     {
-        
         $this->getQueue()->run();
-
-        die();
-
     }
 
     private function runDepartmentsForAMonth()
@@ -105,18 +86,30 @@ class Simulation
 
         $office = $this->getOffice();
         $departments = $office->getDepartments();
-            
-        foreach($departments->all() AS $department)
+        $queue = $this->getQueue();
+        $timer = $this->getTimer();
+        $logger = $this->getLogger();
+
+        foreach($departments AS $department => $services)
         {   
 
-            $services = $department->get('services');
-            
-            if( !$services->all() )
-                continue;
-            
-            foreach($services->all() AS $service)
+            foreach($services AS $service)
             {
-                $service->simulate($this);
+
+                //set the logger on the service simulator
+                $service->getParam('Simulator')->setLogger($logger);
+
+                $serviceInstances = $service->start();
+
+                if(!$serviceInstances)
+                    continue;
+
+                foreach($serviceInstances AS $instance)
+                {
+                    $start = $service->getParam('Simulator')->start($timer);
+                    $queue->register($start, clone $service);
+                }
+                
             }
             
         }

@@ -24,7 +24,3 @@ $app->set('office',$office);
 
 $app->set('simulation',new Simulation($app));
 
-echo '<pre>';
-print_r($app);
-echo '</pre>';
-die();

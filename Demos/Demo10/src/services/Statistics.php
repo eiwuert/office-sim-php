@@ -112,78 +112,152 @@ class Statistics
 		return $hex;
 
 	}
-	public function get()
-	{
 
+	private function getMarketingData($data)
+	{
+		$formatted = array();
+
+		$count = 0;
+		foreach( $data['cumulative'] AS $cK => $cV )
+		{
+			
+			if(!isset($cV['Converted']))
+				continue;
+
+			$formatted['cumulative']['labels'][$count] = $cK;
+			$formatted['cumulative']['datasets'][0]['data'][$count] = $cV['Converted'];
+			$formatted['cumulative']['datasets'][0]['backgroundColor'][$count] = $this->getColor();
+			$count++;
+		}
+
+		foreach( $data['cumulative'] AS $serviceKey => $serviceIDs )
+		{
+
+			$hit = isset($serviceIDs['Converted']) ? round( ($serviceIDs['Converted'] /  $serviceIDs['Attempted']) * 100, 2) : 0;
+			$miss = isset($serviceIDs['Missed']) ? round( ($serviceIDs['Missed'] /  $serviceIDs['Attempted']) * 100, 2) : 0;
+			$formatted['hitmiss'][str_replace(' ', '', $serviceKey)]['labels'] = array('Hit','Miss');
+			$formatted['hitmiss'][str_replace(' ', '', $serviceKey)]['datasets'][0]['backgroundColor'] = array($this->getColor(),$this->getColor());
+			$formatted['hitmiss'][str_replace(' ', '', $serviceKey)]['datasets'][0]['data'] = array($hit,$miss);
+	
+		}
+
+		$monthlyDataSets = array_keys($data['cumulative']);
+		
+		for($i=1;$i<=12;$i++)
+		{
+			$formatted['monthly']['labels'][] = $this->getMonth($i);	
+		}
+
+		foreach($monthlyDataSets AS $label)
+		{
+
+			$monthlyData = array();
+			$monthlyData[$label] = array();
+
+			for($i=0;$i<12;$i++)
+			{
+				$monthlyData[$label][$i] = 0;
+
+				if(isset($data['monthly'][$i+1][$label]) && isset($data['monthly'][$i+1][$label]['Converted']) )
+				{
+					$monthlyData[$label][$i] = $data['monthly'][$i+1][$label]['Converted'];
+				}
+				
+			}
+
+			$formatted['monthly']['datasets'][] = array(
+
+				"label" => $label,
+				"backgroundColor" => $this->getColor(),
+				"data" => $monthlyData[$label]
+			);
+
+		}
+
+		return $formatted;
+	
+	}
+
+
+	private function getMarketingDelays($data)
+	{
 		$formatted = array();
 
 		
-		foreach($this->data AS $departmentKey => $departmentValue)
+		$count = 0;
+		foreach( $data['cumulative'] AS $cK => $cV )
+		{
+			
+			if(!isset($cV['Frequency']))
+				continue;
+
+			$formatted['cumulative']['frequency']['labels'][$count] = $cK;
+			$formatted['cumulative']['frequency']['datasets'][0]['data'][$count] = $cV['Frequency'];
+			$formatted['cumulative']['frequency']['datasets'][0]['backgroundColor'][$count] = $this->getColor();
+
+			$formatted['cumulative']['cost']['labels'][$count] = $cK;
+			$formatted['cumulative']['cost']['datasets'][0]['data'][$count] = $cV['Cost in Days'];
+			$formatted['cumulative']['cost']['datasets'][0]['backgroundColor'][$count] = $this->getColor();
+
+			$count++;
+		}
+
+
+		$monthlyDataSets = array_keys($data['cumulative']);
+		
+		for($i=1;$i<=12;$i++)
+		{
+			$formatted['monthly']['labels'][] = $this->getMonth($i);	
+		}
+
+		foreach($monthlyDataSets AS $label)
 		{
 
-			$formatted[ $departmentKey ] = array();
-			$count = 0;
-			foreach( $departmentValue['cumulative'] AS $cK => $cV )
+			$monthlyData = array();
+			$monthlyData[$label] = array();
+
+			for($i=0;$i<12;$i++)
 			{
-				
-				if(!isset($cV['Converted']))
-					continue;
+				$monthlyData[$label][$i] = 0;
 
-				$formatted[ $departmentKey ]['cumulative']['labels'][$count] = $cK;
-				$formatted[ $departmentKey ]['cumulative']['datasets'][0]['data'][$count] = $cV['Converted'];
-				$formatted[ $departmentKey ]['cumulative']['datasets'][0]['backgroundColor'][$count] = $this->getColor();
-				$count++;
-			}
-
-			foreach( $departmentValue['cumulative'] AS $serviceKey => $serviceIDs )
-			{
-
-				$hit = isset($serviceIDs['Converted']) ? round( ($serviceIDs['Converted'] /  $serviceIDs['Attempted']) * 100, 2) : 0;
-				$miss = isset($serviceIDs['Missed']) ? round( ($serviceIDs['Missed'] /  $serviceIDs['Attempted']) * 100, 2) : 0;
-				$formatted[ $departmentKey ]['hitmiss'][str_replace(' ', '', $serviceKey)]['labels'] = array('Hit','Miss');
-				$formatted[ $departmentKey ]['hitmiss'][str_replace(' ', '', $serviceKey)]['datasets'][0]['backgroundColor'] = array($this->getColor(),$this->getColor());
-				$formatted[ $departmentKey ]['hitmiss'][str_replace(' ', '', $serviceKey)]['datasets'][0]['data'] = array($hit,$miss);
-		
-			}
-
-			$monthlyDataSets = array_keys($departmentValue['cumulative']);
-			
-			for($i=1;$i<=12;$i++)
-			{
-				$formatted[ $departmentKey ]['monthly']['labels'][] = $this->getMonth($i);
-
-				
-			}
-
-			foreach($monthlyDataSets AS $label)
-			{
-
-				$monthlyData = array();
-				$monthlyData[$label] = array();
-
-				for($i=0;$i<12;$i++)
+				if(isset($data['monthly'][$i+1][$label]) && isset($data['monthly'][$i+1][$label]['Frequency']) )
 				{
-					$monthlyData[$label][$i] = 0;
-
-					if(isset($departmentValue['monthly'][$i+1][$label]) && isset($departmentValue['monthly'][$i+1][$label]['Converted']) )
-					{
-						$monthlyData[$label][$i] = $departmentValue['monthly'][$i+1][$label]['Converted'];
-					}
-					
+					$monthlyData[$label][$i] = $data['monthly'][$i+1][$label]['Frequency'];
 				}
-
-				$formatted[ $departmentKey ]['monthly']['datasets'][] = array(
-
-					"label" => $label,
-					"backgroundColor" => $this->getColor(),
-					"data" => $monthlyData[$label]
-				);
-
+				
 			}
 
+			$formatted['monthly']['datasets'][] = array(
+
+				"label" => $label,
+				"backgroundColor" => $this->getColor(),
+				"data" => $monthlyData[$label]
+			);
 
 		}
+
+		return $formatted;
+	
+	}
+
+	public function get()
+	{
+
+		if(!$this->data)
+			return;
 		
+		$formatted = array();
+
+		if(isset($this->data['Marketing']))
+		{
+			$formatted['Marketing'] = $this->getMarketingData($this->data['Marketing']);
+		}
+		
+		if(isset($this->data['Marketing Delays']))
+		{
+			$formatted['Delays']['Marketing'] = $this->getMarketingDelays($this->data['Marketing Delays']);
+		}
+
 		return json_encode($formatted);
 
 	}

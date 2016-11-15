@@ -11,9 +11,9 @@ interface ServiceSimulatorFactoryInterface
 class BaseSimulatorFactory implements ServiceSimulatorFactoryInterface
 {	
 
-	public function make($config)
+	public function make()
 	{
-		return new BaseSimulator($config);
+		return new BaseSimulator();
 	}
 
 }

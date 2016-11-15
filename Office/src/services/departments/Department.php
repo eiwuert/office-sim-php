@@ -17,11 +17,4 @@ class Department
 		$this->config = $config;
 	}
 	
-	/*
-	public function setServices(ServiceContainer $services)
-	{
-		$this->set('services',$services);
-	}
-	*/
-
 }

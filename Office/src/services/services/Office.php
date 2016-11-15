@@ -14,18 +14,9 @@ class Office
 		$this->departments = $departments;
 	}
 	
-	/*
-	private $departments;
-
-	public function setDepartment($name,$config)
-	{
-		$this->departments[$name] = $config;
-	}
-
 	public function getDepartments()
 	{
 		return $this->departments;
-	}
-	*/
+	}	
 
 }

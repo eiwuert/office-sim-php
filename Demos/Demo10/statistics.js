@@ -5,6 +5,8 @@
 	var referalHitMiss=null;
 	var advertisingHitMiss=null;
 	var InPersonHitMiss=null;
+	var marketingDelaysCumulative=null;
+	var marketingDelaysMonthly=null;
 
 	$( document ).ready(function() {
 	    $('#simulate').on('click',function(e){
@@ -24,6 +26,10 @@
 			graphMarketingMonthly(data);
 
 			graphMarketingHitMiss(data);
+
+			graphMarketingDelaysCumulative(data);
+
+			graphMarketingDelaysMonthly(data.Delays.Marketing.monthly);
 
 		});
 	}
@@ -85,6 +91,45 @@
 		});
 
 	}
+
+
+	function graphMarketingDelaysCumulative(data)
+	{
+
+		if(marketingDelaysCumulative!==null){
+	        marketingDelaysCumulative.destroy();
+	    }
+
+		marketingDelaysCumulative = new Chart($('#marketingDelaysCumulative'), {
+		    type: 'pie',
+		    data: {
+			    labels: data.Delays.Marketing.cumulative.frequency.labels,
+			    datasets: data.Delays.Marketing.cumulative.frequency.datasets
+			}
+		});
+
+	}
+
+	function graphMarketingDelaysMonthly(data)
+	{
+
+		if(marketingDelaysMonthly!==null){
+	        marketingDelaysMonthly.destroy();
+	    }
+
+		marketingDelaysMonthly = new Chart($('#marketingDelaysMonthly'), {
+		    type: 'bar',
+		    data: {
+			    labels: data.labels,
+			    datasets: data.datasets
+			}
+			
+		});
+
+	}
+
+	
+
 
 	/*
 	options: {

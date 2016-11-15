@@ -45,6 +45,20 @@
   		<canvas id="InPersonHitMiss" width="200" height="200"></canvas>
 	</div>
 </div>
+
+<div class="clearfix">
+
+  <div class="col col-3">
+      <h3 class="center">Marketing Delays</h3>
+      <canvas id="marketingDelaysCumulative" width="200" height="200"></canvas>
+  </div>
+
+  <div class="col col-3">
+      <h3 class="center">Marketing Delays Monthly</h3>
+      <canvas id="marketingDelaysMonthly" width="200" height="200"></canvas>
+  </div>
+
+</div>
  
  <script type="text/javascript" src="statistics.js"></script>
 </body>
