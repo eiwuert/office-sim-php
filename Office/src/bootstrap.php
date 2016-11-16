@@ -40,6 +40,7 @@ if(isset($marketingData['services']))
 			continue;
 
 		$service = $serviceFactory->make();
+
 		$service->setParam('Name', $serviceData['name'] );
 		$service->setParam('Department', $serviceData['department'] );
 		$service->setParam('Inputs', $serviceInputFactory->make() );
@@ -63,13 +64,16 @@ if(isset($marketingData['services']))
 		
 		$service->setParam('Outputs', $outputs );
 
+
+		/* SIMULATION */
 		$simData = $serviceData['simulation'];
+
+		$simulator = $baseSimulatorFactory->make();
 
 		$opportunityConverter = $opportunityConverterFactory->make();
 		$opportunityConverter->setOpportunities($simData['opportunities']);
 		$opportunityConverter->setProbability($simData['probability']);
 
-		$simulator = $baseSimulatorFactory->make();
 		$simulator->setOpportunityConverter( $opportunityConverter );
 
 		$delayer = $delayerFactory->make();
@@ -85,6 +89,7 @@ if(isset($marketingData['services']))
 		$simulator->setProcessDelayer( $delayer );
 
 		$service->setParam('Simulator', $simulator );
+
 
 		$services[] = $service;
 
