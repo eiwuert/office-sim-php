@@ -2,17 +2,27 @@
 
 namespace Simulation\Services;
 
-
 class SimulationService
 {
+    private $marketing;
+    private $sales;
     private $config;
     private $timer;
+    private $queue;
  
-    public function __construct(Timer $timer, $config)
+    public function __construct(
+            Timer $timer, 
+            $config, 
+            $marketing,
+            $sales,
+            $queue
+        )
     {
-
+        $this->marketing = $marketing;
+        $this->sales = $sales;
         $this->config = $config;
         $this->timer = $timer;
+        $this->queue = $queue;
     }
 
     public function run()
@@ -43,15 +53,26 @@ class SimulationService
             //increment the timer for each month
             $this->timer->incrementMonth($i * 720);
 
-            echo 'boom' . "<br/>";
-            //$this->logger->addRecord('Time','Months','Month ' . $i, 1);
+            //run marketing
+            $this->marketing->run();
+            
+            echo '<pre>';
+            print_r($this->queue);
+            echo '</pre>';
+            die();
+            //run queue
+            //$this->queue->run();
+            
+            //run sales
+            //$this->sales->run();
 
-            //$thisRunMarketing()
-            //run through the departments
-            //$this->runDepartmentsForAMonth();
+            //run queue
+           // $this->queue->run();
 
-            //run through the departments
-            //$this->runQueueForAMonth();
+            
+            //run production
+            
+            
         }
 
     }

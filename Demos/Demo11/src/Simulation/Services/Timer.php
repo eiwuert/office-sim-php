@@ -136,9 +136,9 @@ class Timer
     	return $this->totals;
     }
 
-    public function getCurrent()
+    public function getCurrent($type='array')
     {	
-    	return $this->current;
+    	return $type === 'key' ? implode('-',$this->current) : $this->current;
     }
 
 }

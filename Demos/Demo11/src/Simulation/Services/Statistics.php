@@ -240,12 +240,13 @@ class Statistics
 	
 	}
 
-	public function get()
+	public function all()
 	{
 
 		if(!$this->data)
 			return;
 		
+
 		$formatted = array();
 
 		if(isset($this->data['Marketing']))
@@ -256,6 +257,11 @@ class Statistics
 		if(isset($this->data['Marketing Delays']))
 		{
 			$formatted['Delays']['Marketing'] = $this->getMarketingDelays($this->data['Marketing Delays']);
+		}
+
+		if(isset($this->data['Sales']))
+		{
+			$formatted['Sales'] = $this->getMarketingData($this->data['Sales']);
 		}
 
 		return json_encode($formatted);

@@ -4,7 +4,7 @@ namespace App\Services;
 
 //use FreshJones\Core\Helpers\Container;
 
-use \FreshJones\Office\Contracts\ServiceContract;
+//use \FreshJones\Office\Contracts\ServiceContract;
 
 /*
 	The queues job is to store processes and release them at the specified time interval
@@ -98,9 +98,9 @@ class Queue
 
     }
 
-    public function register($period, ServiceContract $service)
+    public function register($period, $process)
     {
-      $this->registry['Period ' . $period][] = $service;
+      $this->registry[$period][] = $process;
     }
 
 }
