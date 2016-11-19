@@ -2,27 +2,21 @@
 
 namespace Simulation\Services;
 
-class SimulationService
+use Simulation\Factories\MarketingFactory;
+
+class Simulation
 {
-    private $marketing;
-    private $sales;
     private $config;
     private $timer;
     private $queue;
- 
-    public function __construct(
-            Timer $timer, 
-            $config, 
-            $marketing,
-            $sales,
-            $queue
-        )
+    private $marketing;
+
+    public function __construct($config, Timer $timer, Queue $queue, MarketingFactory $marketing)
     {
-        $this->marketing = $marketing;
-        $this->sales = $sales;
         $this->config = $config;
         $this->timer = $timer;
         $this->queue = $queue;
+        $this->marketing = $marketing;
     }
 
     public function run()
@@ -50,16 +44,17 @@ class SimulationService
         //each iteration is a year so it runs 12 times (once per month)
         for($i=1; $i<=12; $i++)
         {
+                
+            //run marketing factory
+            $this->marketing->run();
+
+
             //increment the timer for each month
             $this->timer->incrementMonth($i * 720);
 
-            //run marketing
-            $this->marketing->run();
+
             
-            echo '<pre>';
-            print_r($this->queue);
-            echo '</pre>';
-            die();
+
             //run queue
             //$this->queue->run();
             

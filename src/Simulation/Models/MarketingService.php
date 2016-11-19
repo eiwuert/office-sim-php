@@ -1,7 +1,10 @@
 <?php
+
 namespace Simulation\Models;
 
-class MarketingService
+use Simulation\Contracts\Model;
+
+class MarketingService implements Model
 {
 
 	public function __construct($config)

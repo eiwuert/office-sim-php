@@ -3,7 +3,7 @@
 
 use FastRoute\RouteCollector;
 
-$container = require __DIR__ . '/app/bootstrap.php';
+$container = require __DIR__ . '/../app/bootstrap.php';
 
 $dispatcher = FastRoute\simpleDispatcher(function (RouteCollector $r) 
 {

@@ -1,7 +1,7 @@
 <?php
 namespace Simulation\Controller;
 
-use Simulation\Services\SimulationService;
+use Simulation\Services\Simulation;
 use Simulation\Services\Statistics;
 
 class SimulateController
@@ -10,7 +10,7 @@ class SimulateController
     private $statistics;
     private $simulation;
    	
-   	public function __construct(SimulationService $simulation, Statistics $statistics)
+   	public function __construct(Simulation $simulation, Statistics $statistics)
    	{	
         $this->statistics = $statistics;  
      		$this->simulation = $simulation;	
